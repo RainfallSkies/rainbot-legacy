@@ -66,11 +66,9 @@ class RainBot(irc.IRCClient):
         if 'ayy lmao' in msg.lower():
             if random.randint(0, 25) == 12:
                 self.msg(channel, "ayy lmao")
-                self.logfile[channel].write('<' + NICK + '> ayy lmao\n')
 
         if msg.lower() == "hi rainbot":
             self.msg(channel, "Hi!")
-            self.logfile[channel].write('<' + NICK + '> Hi!\n')
 
         if user.split('!')[0].lower() == 'muffin':
             if msg.lower() == "right rainbot":
@@ -83,14 +81,12 @@ class RainBot(irc.IRCClient):
             self.pendingquotefile.write(newmsg + '\n')
             print "Quote \"%s\" added to pending list." % newmsg
             self.msg(channel, "Quote added!")
-            self.logfile[channel].write('<' + NICK + '> Quote added!\n')
 
         """Quote Stuff"""
         if msg.lower() == '$r quote':
             lines = open('quotes.txt').read().splitlines()
             myline = random.choice(lines)
             self.msg(channel, myline)
-            self.logfile[channel].write('<' + NICK + '> %s\n' % myline)
 
         if msg.lower().startswith('$m math'):
             self.lineRate = 2
@@ -103,7 +99,6 @@ class RainBot(irc.IRCClient):
 
         if msg.lower() == '$r inhale':
             self.msg(channel, "inhale my dong enragement child")
-            self.logfile[channel].write('inhale my dong enragement child\n')
 
         if msg.lower().startswith('$r wiki'):
             newmsg = msg.lower().replace("$r wiki ", "")
@@ -115,18 +110,13 @@ class RainBot(irc.IRCClient):
             self.msg(channel, "RainBot")
             self.msg(channel, "Yet another IRC bot")
             self.msg(channel, "2015 RainfallSkies (mufn)")
-            self.logfile[channel].write('<' + NICK + '> RainBot\n')
-            self.logfile[channel].write('<' + NICK + '> Yet another IRC bot\n')
-            self.logfile[channel].write('<' + NICK + '> 2015 RainfallSkies (mufn)\n')
 
         if msg.lower() == 'what is gak?':
             self.msg(channel, 'It\'s GAK GAK GAK')
-            self.logfile[channel].write('<' + NICK + '> It\'s GAK GAK GAK\n')
 
         if msg.lower() == 'lol':
             if random.randint(0, 500) == 500:
                 self.msg(channel, 'lol')
-                self.logfile[channel].write('<' + NICK + '> lol')
 
         if msg.lower().startswith('https://youtube.com/watch?v='):
             newmsg = msg.replace('https://youtube.com/watch?v=', '')
@@ -165,7 +155,6 @@ class RainBot(irc.IRCClient):
 
         if msg.lower() == '$r help':
             self.msg(channel, 'Sending commands to %s. Keep in mind this list is not yet complete.' % user.split('!')[0])
-            self.logfile[channel].write('Sending commands to %s. Keep in mind this list is not yet complete.\n' % user.split('!')[0])
             self.msg(user.split('!')[0], '$r quote - Displays a random quote from the database')
             self.msg(user.split('!')[0], '$r quote add - Adds a quote to the pending list')
             self.msg(user.split('!')[0], '$r question add <question> - Adds a question to shortly be added. It doesn\'t have to be exact words, as long as I know what you are trying to ask.')
@@ -181,7 +170,6 @@ class RainBot(irc.IRCClient):
             newmsg = msg.lower().replace('$r question submit', '')
             self.pendingquestions.write(newmsg)
             self.msg('Question submitted for review. Will be added shortly.')
-            self.logfile[channel].write('<' + NICK + '> Question submitted for review.')
 
         """Question stuff"""
         if msg.lower().startswith(NICK.lower()):
@@ -271,33 +259,26 @@ class RainBot(irc.IRCClient):
         if msg.lower() == '$m quit':
             if not user.split('!')[0].lower() == 'muffin':
                 self.msg(channel, "Only Muffin can shut me down.")
-                self.logfile[channel].write('<' + NICK + '> Only Muffin can shut me down.\n')
             else:
                 self.msg(channel, "Bye!")
-                self.logfile[channel].write('<' + NICK + '> Bye!\n')
                 self.quit("Shutting down for maintenance")
 
     def action(self, user, channel, msg):
         """This will get called when the bot sees someone do an action."""
         user = user.split('!', 1)[0]
-        self.logfile[channel].write("* %s %s\n" % (user, msg))
 
     def irc_NICK(self, prefix, params):
         """Called when an IRC user changes their nickname."""
         old_nick = prefix.split('!')[0]
         new_nick = params[0]
-        self.logfile[channel].write("*%s is now known as %s\n" % (old_nick, new_nick))
 
     def userJoined(self, user, channel):
-        self.logfile[channel].write('%s has joined %s\n' % (user, channel))
         print '%s has joined %s' % (user, channel)
 
     def userLeft(self, user, channel):
-        self.logfile[channel].write('%s has left %s\n' % (user, channel))
         print '%s has left %s' % (user, channel)
 
     def userQuit(self, user, quitMessage):
-        self.logfile[channel].write('%s has quit. Reason: %s\n' % (user, quitMessage))
         print '%s has quit. Reason: %s' % (user, quitMessage)
 
 class RainBotFactory(protocol.ClientFactory):
