@@ -289,11 +289,6 @@ class RainBotFactory(protocol.ClientFactory):
         self.nickname = nickname
 
     def clientConnectionLost(self, connector, reason):
-        os.rename('logs/pm.txt', 'logs/pm_%s.txt' % time.strftime("%c"))
-        os.rename('logs/techtalk.txt', 'logs/techtalk_%s.txt' % time.strftime("%c"))
-        os.rename('logs/shiftosnext.txt', 'logs/shiftosnext_%s.txt' % time.strftime("%c"))
-        os.rename('logs/jamesbondsfunhouse.txt', 'logs/jamesbondsfunhouse_%s.txt' % time.strftime("%c"))
-        os.rename('logs/bottesting.txt', 'logs/bottesting_%s.txt' % time.strftime("%c"))
         print "Lost connection (%s)" % reason
 
 
